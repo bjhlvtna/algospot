@@ -1,20 +1,22 @@
 
-maxTestCaseNum = input()
+from functools import reduce
 
-testCase = []
-for i in range(int(maxTestCaseNum)):
-    testCase.append(input())
+maxTestCaseNum = int(input())
 
-for case in testCase:
-    num = int(case)
-    divisors = [x for x in range(1, num+1) if num%x == 0]
-    divisors.pop()
+for i in range(maxTestCaseNum):
+    num = int(input())
+    divisors = set(reduce(list.__add__, ([i, num//i] for i in range(1, int(num**0.5) + 1) if num % i == 0)))
+    divisors.remove(num)
+    isWeird = True
+    while num <= sum(divisors):
+        if num <= 0:
+            break
+        else:
+            num = num - divisors.pop()
 
-    for x in range(len(divisors)):
-        num = num - divisors.pop()
         if num in divisors:
-            print('not weird')
+            isWeird = False
             break
 
-    if len(divisors) == 0:
-        print('weird')
+    print('weird' if isWeird else 'not weird')
+
