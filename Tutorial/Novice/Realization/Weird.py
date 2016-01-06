@@ -3,7 +3,7 @@ from functools import reduce
 
 
 def make_divisors(num):
-    return set(reduce(list.__add__, ([i, num//i] for i in range(1, int(num**0.5) + 1) if num % i == 0)))
+    return list(set(reduce(list.__add__, ([i, num//i] for i in range(1, int(num**0.5) + 1) if num % i == 0))))
 
 # canMake(i, j) => (j == 0 or canMake(i-1, j) or canMake(i-1, j-divisors[i-1]))
 # a. j = 0 이라면, i개에서 한 개도 안 고르면 되니까 ok입니다.
@@ -14,15 +14,15 @@ def make_divisors(num):
 
 def is_weird(divisor_cnt, compared_num):
 
-    if divisor_cnt == 1:
+    if divisor_cnt == 2:
         return True
 
-    if is_weird(divisor_cnt-1, compared_num - divisors[divisor_cnt]):
+    if is_weird(divisor_cnt-1, compared_num - divisors[divisor_cnt-1]):
         for x in range(divisor_cnt):
+            sum_result = 0
             for y in range(divisor_cnt):
                 if x == y:
                     continue
-                sum_result = 0
                 if subSetSum[x+y] == 0:
                     subSetSum[x+y] = divisors[x] + divisors[y]
 
@@ -37,11 +37,10 @@ def is_weird(divisor_cnt, compared_num):
 
 divisors = make_divisors(12)
 
-subSetSum = [-1]*500001
-
-# is_weird(len(divisors), 12)
-subSetSum[50000] = 1
-print(len(subSetSum))
-print(subSetSum[50000])
+subSetSum = [0]*500001
+print(is_weird(len(divisors)-1, 12))
+# subSetSum[50000] = 1
+# print(len(subSetSum))
+# print(subSetSum[50000])
 # for i in subSetSum:
 #     print(i)
